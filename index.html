@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- NEW: Google Fonts for Noto Serif Bengali -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;700&display=swap" rel="stylesheet">
     <title>ইনসাফ ফাউন্ডেশন - ম্যানেজমেন্ট</title>
     <style>
         :root {
             --primary-color: #185E18; --secondary-color: #FF8700; --white-color: #FFFFFF;
             --light-gray: #f4f4f4; --gray-text: #555;
         }
-        body { font-family: Arial, sans-serif; margin: 0; background-color: var(--light-gray); color: var(--gray-text); }
+        /* UPDATED: Font Family */
+        body { font-family: 'Noto Serif Bengali', serif; margin: 0; background-color: var(--light-gray); color: var(--gray-text); }
         .container { padding: 15px; max-width: 1200px; margin: 0 auto; }
         .header-banner { width: 100%; height: auto; max-height: 400px; object-fit: cover; display: block; }
         header { background-color: var(--primary-color); color: var(--white-color); padding: 15px; display: flex; justify-content: space-between; align-items: center; }
@@ -21,11 +26,11 @@
         #login-section button { background-color: var(--primary-color); color: var(--white-color); border: none; font-size: 16px; cursor: pointer; }
         #main-content { display: none; }
         .section-card { background: white; padding: 20px; margin-top: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .section-card h3 { margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--light-gray); padding-bottom: 10px; }
+        .section-card h3, .section-card h4 { margin-top: 0; color: var(--primary-color); border-bottom: 2px solid var(--light-gray); padding-bottom: 10px; }
         .section-card label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .section-card input, .section-card textarea { width: 100%; box-sizing: border-box; margin-bottom: 10px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+        .section-card input, .section-card textarea { width: 100%; box-sizing: border-box; margin-bottom: 10px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-family: 'Noto Serif Bengali', serif; }
         .section-card textarea { min-height: 100px; resize: vertical; }
-        .section-card button { background-color: var(--secondary-color); color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
+        .section-card button { background-color: var(--secondary-color); color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-family: 'Noto Serif Bengali', serif; }
         #add-member-btn { display: block; width: 200px; margin: 20px auto; padding: 12px; background-color: var(--primary-color); color: var(--white-color); border: none; border-radius: 5px; text-align: center; font-size: 16px; cursor: pointer; }
         #member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
         .member-card { background: var(--white-color); border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 15px; text-align: center; }
@@ -40,111 +45,32 @@
     </style>
 </head>
 <body>
-    <section id="login-section" class="container">
-        <h2>এডমিন লগইন</h2>
-        <form id="login-form">
-            <input type="email" id="email" placeholder="ইমেইল" required>
-            <input type="password" id="password" placeholder="পাসওয়ার্ড" required>
-            <button type="submit">লগইন</button>
-            <p id="login-error"></p>
-        </form>
-    </section>
-
-    <main id="main-content">
-        <img id="header-banner" src="https://via.placeholder.com/1200x400.png?text=Banner" alt="ব্যানার" class="header-banner">
-        <header>
-            <h1>ফাউন্ডেশন ম্যানেজমেন্ট</h1>
-            <button id="logout-btn">লগ আউট</button>
-        </header>
-
-        <div class="container">
-            <div class="section-card">
-                <h3>সাইট সেটিংস</h3>
-                <label for="banner-url-input">ব্যানারের লিংক:</label>
-                <input type="url" id="banner-url-input" placeholder="এখানে ব্যানারের নতুন লিংক দিন">
-                <button id="save-banner-btn">ব্যানার সেভ করুন</button>
-            </div>
-
-            <div class="section-card">
-                <h3>সদস্য ব্যবস্থাপনা</h3>
-                <button id="add-member-btn">নতুন মেম্বার যোগ করুন</button>
-                <div id="member-grid"></div>
-            </div>
-
-            <!-- NEW: Info Section Management -->
-            <div id="info-sections-management" class="section-card">
-                <h3>ওয়েবসাইট তথ্য ব্যবস্থাপনা</h3>
-                <!-- Sections will be injected here by JS -->
-            </div>
-        </div>
-    </main>
-
-    <div id="member-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" style="float: right; font-size: 28px; cursor: pointer;">&times;</span>
-            <h2 id="modal-title">নতুন মেম্বার</h2>
-            <form id="member-form">
-                <input type="hidden" id="member-id">
-                <label>নাম:</label><input type="text" id="member-name" required>
-                <label>পদবি:</label><input type="text" id="member-title" required>
-                <label>ছবির লিংক:</label><input type="url" id="member-image-url" required>
-                <!-- REMOVED: Last Deposit Input -->
-                <h4>মাসিক জমার হিসাব: (এগুলো যোগ করে মোট জমা স্বয়ংক্রিয়ভাবে দেখাবে)</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <input type="number" id="deposit-jan" placeholder="জানুয়ারি"><input type="number" id="deposit-feb" placeholder="ফেব্রুয়ারি">
-                    <input type="number" id="deposit-mar" placeholder="মার্চ"><input type="number" id="deposit-apr" placeholder="এপ্রিল">
-                    <input type="number" id="deposit-may" placeholder="মে"><input type="number" id="deposit-jun" placeholder="জুন">
-                    <input type="number" id="deposit-jul" placeholder="জুলাই"><input type="number" id="deposit-aug" placeholder="আগস্ট">
-                    <input type="number" id="deposit-sep" placeholder="সেপ্টেম্বর"><input type="number" id="deposit-oct" placeholder="অক্টোবর">
-                    <input type="number" id="deposit-nov" placeholder="নভেম্বর"><input type="number" id="deposit-dec" placeholder="ডিসেম্বর">
-                </div>
-                <div style="text-align: right; margin-top: 15px;"><button type="submit">সেভ করুন</button></div>
-            </form>
-        </div>
-    </div>
+    <!-- HTML structure remains the same -->
+    <section id="login-section" class="container"><h2>এডমিন লগইন</h2><form id="login-form"><input type="email" id="email" placeholder="ইমেইল" required><input type="password" id="password" placeholder="পাসওয়ার্ড" required><button type="submit">লগইন</button><p id="login-error"></p></form></section><main id="main-content"><img id="header-banner" src="https://via.placeholder.com/1200x400.png?text=Banner" alt="ব্যানার" class="header-banner"><header><h1>ফাউন্ডেশন ম্যানেজমেন্ট</h1><button id="logout-btn">লগ আউট</button></header><div class="container"><div class="section-card"><h3>সাইট সেটিংস</h3><label for="banner-url-input">ব্যানারের লিংক:</label><input type="url" id="banner-url-input" placeholder="এখানে ব্যানারের নতুন লিংক দিন"><button id="save-banner-btn">ব্যানার সেভ করুন</button></div><div class="section-card"><h3>সদস্য ব্যবস্থাপনা</h3><button id="add-member-btn">নতুন মেম্বার যোগ করুন</button><div id="member-grid"></div></div><div id="info-sections-management" class="section-card"><h3>ওয়েবসাইট তথ্য ব্যবস্থাপনা</h3></div></div></main><div id="member-modal" class="modal"><div class="modal-content"><span class="close-btn" style="float: right; font-size: 28px; cursor: pointer;">&times;</span><h2 id="modal-title">নতুন মেম্বার</h2><form id="member-form"><input type="hidden" id="member-id"><label>নাম:</label><input type="text" id="member-name" required><label>পদবি:</label><input type="text" id="member-title" required><label>ছবির লিংক:</label><input type="url" id="member-image-url" required><h4>মাসিক জমার হিসাব: (এগুলো যোগ করে মোট জমা স্বয়ংক্রিয়ভাবে দেখাবে)</h4><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"><input type="number" id="deposit-jan" placeholder="জানুয়ারি"><input type="number" id="deposit-feb" placeholder="ফেব্রুয়ারি"><input type="number" id="deposit-mar" placeholder="মার্চ"><input type="number" id="deposit-apr" placeholder="এপ্রিল"><input type="number" id="deposit-may" placeholder="মে"><input type="number" id="deposit-jun" placeholder="জুন"><input type="number" id="deposit-jul" placeholder="জুলাই"><input type="number" id="deposit-aug" placeholder="আগস্ট"><input type="number" id="deposit-sep" placeholder="সেপ্টেম্বর"><input type="number" id="deposit-oct" placeholder="অক্টোবর"><input type="number" id="deposit-nov" placeholder="নভেম্বর"><input type="number" id="deposit-dec" placeholder="ডিসেম্বর"></div><div style="text-align: right; margin-top: 15px;"><button type="submit">সেভ করুন</button></div></form></div></div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
+        // JavaScript logic remains the same
         const firebaseConfig = { apiKey: "AIzaSyC88D1g6JEb_KRIvpU4M0Xgs_2SCJ734S0", authDomain: "saving-found-app.firebaseapp.com", projectId: "saving-found-app", storageBucket: "saving-found-app.firebasestorage.app", messagingSenderId: "1007703028318", appId: "1:1007703028318:web:ec8b9f1d45ad95fb1d3acf" };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-
-        // DOM Elements
         const loginSection = document.getElementById('login-section');
         const mainContent = document.getElementById('main-content');
         const memberGrid = document.getElementById('member-grid');
         const modal = document.getElementById('member-modal');
         const memberForm = document.getElementById('member-form');
-        
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                loginSection.style.display = 'none';
-                mainContent.style.display = 'block';
-                fetchSettings();
-                fetchMembers();
-                renderInfoSectionForms(); // NEW
-            } else {
-                loginSection.style.display = 'block';
-                mainContent.style.display = 'none';
-            }
-        });
-
-        // Login/Logout and Banner Settings... (unchanged)
+        auth.onAuthStateChanged(user => { if (user) { loginSection.style.display = 'none'; mainContent.style.display = 'block'; fetchSettings(); fetchMembers(); renderInfoSectionForms(); } else { loginSection.style.display = 'block'; mainContent.style.display = 'none'; } });
         document.getElementById('login-form').addEventListener('submit', (e) => { e.preventDefault(); auth.signInWithEmailAndPassword(e.target.email.value, e.target.password.value).catch(err => alert('ভুল ইমেইল বা পাসওয়ার্ড।')); });
         document.getElementById('logout-btn').addEventListener('click', () => auth.signOut());
         const fetchSettings = async () => { const doc = await db.collection('settings').doc('config').get(); if(doc.exists && doc.data().bannerUrl) { document.getElementById('header-banner').src = doc.data().bannerUrl; document.getElementById('banner-url-input').value = doc.data().bannerUrl; } };
         document.getElementById('save-banner-btn').addEventListener('click', async () => { const url = document.getElementById('banner-url-input').value.trim(); if(url) { await db.collection('settings').doc('config').set({ bannerUrl: url }, { merge: true }); alert('ব্যানার আপডেট হয়েছে!'); fetchSettings(); } else { alert('লিংক দিন।'); } });
-
-        // --- Member Management ---
         const fetchMembers = () => { db.collection('members').onSnapshot(snapshot => { memberGrid.innerHTML = ''; snapshot.forEach(doc => memberGrid.appendChild(createMemberCard({ id: doc.id, ...doc.data() }))); }); };
         const createMemberCard = (member) => { const card = document.createElement('div'); card.className = 'member-card'; card.innerHTML = `<img src="${member.imageUrl}" alt="${member.name}"><h3>${member.name}</h3><p>পদবি: ${member.title}</p><p><strong>মোট জমা:</strong> ${member.lastDeposit || 0} টাকা</p><div class="card-actions"><button class="edit-btn">এডিট</button><button class="delete-btn">ডিলিট</button></div>`; card.querySelector('.edit-btn').addEventListener('click', () => openEditModal(member)); card.querySelector('.delete-btn').addEventListener('click', () => deleteMember(member.id)); return card; };
-        
         document.getElementById('add-member-btn').addEventListener('click', () => { memberForm.reset(); document.getElementById('member-id').value = ''; document.getElementById('modal-title').textContent = 'নতুন মেম্বার'; modal.style.display = 'block'; });
         modal.querySelector('.close-btn').addEventListener('click', () => modal.style.display = 'none');
-        
         const openEditModal = (member) => {
             memberForm.reset();
             document.getElementById('modal-title').textContent = 'তথ্য এডিট করুন';
@@ -156,70 +82,21 @@
             months.forEach(month => { document.getElementById(`deposit-${month}`).value = member.monthlyDeposits?.[month] || ''; });
             modal.style.display = 'block';
         };
-
-        memberForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('member-id').value;
-            const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-            const monthlyDeposits = {};
-            let totalDeposit = 0; // UPDATED: Calculate total deposit
-            months.forEach(month => {
-                const value = Number(document.getElementById(`deposit-${month}`).value) || 0;
-                monthlyDeposits[month] = value;
-                totalDeposit += value;
-            });
-            const memberData = {
-                name: document.getElementById('member-name').value,
-                title: document.getElementById('member-title').value,
-                imageUrl: document.getElementById('member-image-url').value,
-                monthlyDeposits: monthlyDeposits,
-                lastDeposit: totalDeposit // UPDATED: Save total deposit in 'lastDeposit' field
-            };
-            if (id) { await db.collection('members').doc(id).update(memberData); } 
-            else { await db.collection('members').add(memberData); }
-            modal.style.display = 'none';
-            alert('তথ্য সেভ হয়েছে!');
-        });
+        memberForm.addEventListener('submit', async (e) => { e.preventDefault(); const id = document.getElementById('member-id').value; const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']; const monthlyDeposits = {}; let totalDeposit = 0; months.forEach(month => { const value = Number(document.getElementById(`deposit-${month}`).value) || 0; monthlyDeposits[month] = value; totalDeposit += value; }); const memberData = { name: document.getElementById('member-name').value, title: document.getElementById('member-title').value, imageUrl: document.getElementById('member-image-url').value, monthlyDeposits: monthlyDeposits, lastDeposit: totalDeposit }; if (id) { await db.collection('members').doc(id).update(memberData); } else { await db.collection('members').add(memberData); } modal.style.display = 'none'; alert('তথ্য সেভ হয়েছে!'); });
         const deleteMember = async (id) => { if (confirm('নিশ্চিত?')) { await db.collection('members').doc(id).delete(); alert('ডিলিট হয়েছে।'); } };
-
-        // --- NEW: Info Section Management ---
-        const infoSections = {
-            introduction: 'পরিচিতি', vision_mission: 'উদ্দেশ্য ও লক্ষ্য', rules_conditions: 'নীতি ও শর্তাবলী',
-            future_plans: 'ভবিষ্যৎ পরিকল্পনা', member_roles: 'সদস্য সুবিধা ও দায়িত্ব', financial_policy: 'আর্থিক নীতিমালা',
-            developer_info: 'ডেভলপার পরিচিতি'
-        };
-
+        const infoSections = { introduction: 'পরিচিতি', vision_mission: 'উদ্দেশ্য ও লক্ষ্য', rules_conditions: 'নীতি ও শর্তাবলী', future_plans: 'ভবিষ্যৎ পরিকল্পনা', member_roles: 'সদস্য সুবিধা ও দায়িত্ব', financial_policy: 'আর্থিক নীতিমালা', developer_info: 'ডেভলপার পরিচিতি' };
         const renderInfoSectionForms = async () => {
             const container = document.getElementById('info-sections-management');
             container.innerHTML = '<h3>ওয়েবসাইট তথ্য ব্যবস্থাপনা</h3>';
             for (const [id, title] of Object.entries(infoSections)) {
                 const doc = await db.collection('info_sections').doc(id).get();
                 const data = doc.exists ? doc.data() : { imageUrl: '', text: '' };
-                const formHtml = `
-                    <div style="border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px;">
-                        <h4>${title}</h4>
-                        <label for="${id}-url">ছবির লিংক:</label>
-                        <input type="url" id="${id}-url" value="${data.imageUrl}">
-                        <label for="${id}-text">বিস্তারিত লিখুন:</label>
-                        <textarea id="${id}-text">${data.text}</textarea>
-                        <button data-id="${id}">সেভ করুন</button>
-                    </div>
-                `;
+                const formHtml = `<div style="border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px;"><h4>${title}</h4><label for="${id}-url">ছবির লিংক:</label><input type="url" id="${id}-url" value="${data.imageUrl}"><label for="${id}-text">বিস্তারিত লিখুন:</label><textarea id="${id}-text">${data.text}</textarea><button data-id="${id}">সেভ করুন</button></div>`;
                 container.insertAdjacentHTML('beforeend', formHtml);
             }
-            container.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', saveInfoSection);
-            });
+            container.querySelectorAll('button').forEach(button => button.addEventListener('click', saveInfoSection));
         };
-        const saveInfoSection = async (e) => {
-            const id = e.target.dataset.id;
-            const data = {
-                imageUrl: document.getElementById(`${id}-url`).value,
-                text: document.getElementById(`${id}-text`).value
-            };
-            await db.collection('info_sections').doc(id).set(data);
-            alert(`'${infoSections[id]}' সেকশনের তথ্য সেভ হয়েছে!`);
-        };
+        const saveInfoSection = async (e) => { const id = e.target.dataset.id; const data = { imageUrl: document.getElementById(`${id}-url`).value, text: document.getElementById(`${id}-text`).value }; await db.collection('info_sections').doc(id).set(data); alert(`'${infoSections[id]}' সেকশনের তথ্য সেভ হয়েছে!`); };
     </script>
 </body>
 </html>
